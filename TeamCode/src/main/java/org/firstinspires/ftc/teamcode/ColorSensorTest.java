@@ -47,25 +47,34 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp(name="ColorSensor", group="Robot")
-@Disabled
-public class Main extends LinearOpMode
-{
+//@Disabled
+public class ColorSensorTest extends LinearOpMode {
 
 //    Links the hardware to the main class and gets hardwareMap from LinearOpMode
-    private Hardware hw = new Hardware(hardwareMap);
+    private Hardware hw;
 
 
 //    All the variables and fields that will be used in runOpMode()
-    int r, g, b;
+    private int R, G, B, A, r, g, b, a;
+    private String sight;
 
 
 //    This is what is going to happen when the code starts
     public void runOpMode(){
 
+        hw = new Hardware(hardwareMap);
+        telemetry.addData("Error", hw.getError());
+
         r = 0;
         g = 0;
         b = 0;
+        a = 0;
+        R = 0;
+        G = 0;
+        B = 0;
+        A = 0;
 
+        sight = "air";
 //        Waits until driver presses play
 
         telemetry.addLine("Waiting...");
@@ -77,18 +86,44 @@ public class Main extends LinearOpMode
 
         hw.init();
 
+        telemetry.addLine("Calibrating");
+        telemetry.update();
+
+        for(int i = 0 ; i < 10; i++){
+            R += hw.sampler.red();
+            G += hw.sampler.green();
+            B += hw.sampler.blue();
+            A += hw.sampler.alpha();
+        }
+
+        R /= 10;
+        G /= 10;
+        B /= 10;
+        A /= 10;
+
         while (opModeIsActive()){
 //            Sets the colors for what the sampler sees
+
             r = hw.sampler.red();
-            b = hw.sampler.blue();
             g = hw.sampler.green();
+            b = hw.sampler.blue();
+            a = hw.sampler.alpha();
 
-//            Displays what the sampler sees to the user
-           telemetry.addData("Red", r);
-           telemetry.addData("Green", g);
-           telemetry.addData("Blue", b);
-           telemetry.update();
+//            Displays what the sampler sees in contrast to the air
+           telemetry.addData("Red",  R - r);
+           telemetry.addData("Green", G - g);
+           telemetry.addData("Blue", B - b);
+           telemetry.addData("Alpha", A - a);
 
+//           Tells the difference between white and nothing
+
+            if(Math.abs(R - r) > 10 || Math.abs(G - g) > 10 || Math.abs(B - b) > 10){
+                sight = "object";
+            } else{
+                sight = "air";
+            }
+            telemetry.addData("Sight", sight);
+            telemetry.update();
         }
 
     }
