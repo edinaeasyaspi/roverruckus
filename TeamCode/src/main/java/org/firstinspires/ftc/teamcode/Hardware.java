@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Vuforia;
 
@@ -17,8 +19,24 @@ public class Hardware {
     //    This is going to define all the hardware that will be used in the code
     public ColorSensor sampler;
     public VuforiaLocalizer vf;
-    private String errorMsg;
 
+    public DcMotor getlDrive() {
+        return lDrive;
+    }
+
+    public DcMotor getcDrive() {
+        return cDrive;
+    }
+
+    public DcMotor getrDrive() {
+        return rDrive;
+    }
+
+    private DcMotor lDrive, cDrive, rDrive;
+
+
+
+    private String errorMsg;
 
 //    What will happen when there is a new object if this class
     public Hardware(HardwareMap hwMap){
@@ -26,31 +44,35 @@ public class Hardware {
 
 //        Assign all the object to the actual components on the robot
         try {
-            sampler = hwMap.colorSensor.get("sampler");
-        } catch (NullPointerException e){
-            errorMsg = "Cannot get hardware";
+
+//            sampler = hwMap.colorSensor.get("sampler");
+            lDrive = hwMap.dcMotor.get("lDrive");
+            cDrive = hwMap.dcMotor.get("cDrive");
+            rDrive = hwMap.dcMotor.get("rDrive");
+
+//            Set all the motor powers to 0 and assign preferences
+            lDrive.setPower(0);
+            lDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            lDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            lDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            cDrive.setPower(0);
+            cDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+            cDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            cDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            rDrive.setPower(0);
+            rDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+            rDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        } catch (Exception e){
+            errorMsg = "Could not get hardware\nError:\n" + e.toString();
         }
 
         if (errorMsg.equals("")){
             errorMsg = "No errors";
         }
-
-        /*
-         * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-         */
-        int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-
-
-        parameters.vuforiaLicenseKey = "Af2Jdgv/////AAABmTRZvnw8TEljipKgw/L2hiURA/QVfil6Xmalwf6NUArV6dJV+ASpcYtKxkQayGtLLJ1Z6llBXmiBpm3ljI2IgzWC6ThdevkJa9apNNA7f2HXXSIZPxbd5CSphIDO/rEdPezKJqvfg1gz6Fke73O4RdutniIplm5r/BMg+0v/j6KOEjuwUZOQ5iaAzSbKPjmM95X1W68PqMf0BDETNH6Znv8ZuvICS7/8UuWeAZkbQ7CsFc30/9louXQ+fD760zalcZo9sW24s4Fh6AkUFmur/hN8HOhnAM/mUVISl5MJwCEsWGyAbGozJDPgr1cWcl5DUVZJZVdwYMuAKFeDDZZpQgzgz5AEINO+XJJlQuu2MukZ";
-
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-
-        vf = ClassFactory.getInstance().createVuforia(parameters);
-
-        VuforiaTrackables relicTrackables = this.vf.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
     }
 
