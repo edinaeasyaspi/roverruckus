@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TeleOP;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Hardware;
 
-@TeleOp(name = "Drive", group = "Robot")
+
+@TeleOp(name = "DriveTrain", group = "Robot")
 
 public class DriveTrain extends LinearOpMode {
 
@@ -31,8 +33,8 @@ public class DriveTrain extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            lDrive = (-1 * gamepad1.left_stick_y + gamepad1.right_stick_x * 0.5) * MAXSPEED;
-            rDrive = (-1 * gamepad1.left_stick_y - gamepad1.right_stick_x * 0.5) * MAXSPEED;
+            lDrive = ((-1 * gamepad1.left_stick_y) + (gamepad1.right_stick_x * 0.5)) * MAXSPEED;
+            rDrive = ((-1 * gamepad1.left_stick_y) - (gamepad1.right_stick_x * 0.5)) * MAXSPEED;
             cDrive = (gamepad1.right_trigger - gamepad1.left_trigger) * MAXSPEED;
 
 //            Constrain the motor speeds
@@ -42,6 +44,8 @@ public class DriveTrain extends LinearOpMode {
 
 //            Output stats to the driver
             telemetry.addData("Center encoder value", hw.getcDrive().getCurrentPosition());
+            telemetry.addData("lDrive", lDrive);
+            telemetry.addData("rDrive", rDrive);
             telemetry.update();
 
 //            Actually set the power from the hardware
