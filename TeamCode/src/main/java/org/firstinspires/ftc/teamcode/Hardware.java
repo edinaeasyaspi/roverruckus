@@ -60,26 +60,26 @@ public class Hardware {
 //            Set all the motor powers to 0 and assign preferences
             lDrive.setPower(0);
             lDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            lDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             lDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            lDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             lDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             cDrive.setPower(0);
             cDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-            cDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             cDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            cDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             cDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             rDrive.setPower(0);
             rDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            rDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            rDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             rDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             
             hanger.setPower(0);
             hanger.setDirection(DcMotorSimple.Direction.REVERSE);
-            hanger.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             hanger.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hanger.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             hanger.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             

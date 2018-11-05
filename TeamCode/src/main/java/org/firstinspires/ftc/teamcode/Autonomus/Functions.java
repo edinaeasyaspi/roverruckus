@@ -191,5 +191,8 @@ public class Functions {
         hw.getlDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getcDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getrDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        hw.getlDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hw.getcDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hw.getrDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
