@@ -26,10 +26,7 @@ public class TeleOpMain extends LinearOpMode {
         lDrive = 0;
         cDrive = 0;
         rDrive = 0;
-        hanger = 0;
-        tHanger = 0;
-        hLastPos = 0;
-        hangerUp = false;
+
 
         telemetry.addLine(hw.getError());
         telemetry.addLine("Waiting...");
@@ -44,20 +41,14 @@ public class TeleOpMain extends LinearOpMode {
             lDrive = ((-1 * gamepad1.left_stick_y) + (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
             rDrive = ((-1 * gamepad1.left_stick_y) - (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
             cDrive = (gamepad1.right_trigger - gamepad1.left_trigger) * DRIVE_MAX_SPEED;
-            hanger = (-1 * gamepad2.left_stick_y);
 
 //            Constrain the drive speeds
             lDrive = !(Math.abs(lDrive) > DRIVE_MAX_SPEED) ? lDrive : DRIVE_MAX_SPEED * (Math.abs(lDrive) / lDrive);
             cDrive = !(Math.abs(cDrive) > DRIVE_MAX_SPEED) ? cDrive : DRIVE_MAX_SPEED * (Math.abs(cDrive) / cDrive);
             rDrive = !(Math.abs(rDrive) > DRIVE_MAX_SPEED) ? rDrive : DRIVE_MAX_SPEED * (Math.abs(rDrive) / rDrive);
 
-//            Code to assign buttons
-            if(a.get(gamepad1.a)){
-                hangerUp = !hangerUp;
-            }
 
-//            Set target encoder positions
-            tHanger = hangerUp? 2800 : 50;
+
 
 //            Set power for motors
             hSpeed = Math.abs(hw.getHanger().getCurrentPosition() - hLastPos);
