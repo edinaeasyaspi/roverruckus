@@ -38,7 +38,7 @@ public class TeleOpMain extends LinearOpMode {
         waitForStart();
 
         telemetry.clearAll();
-        
+
         while (opModeIsActive()) {
 
             lDrive = ((-1 * gamepad1.left_stick_y) + (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
@@ -55,14 +55,14 @@ public class TeleOpMain extends LinearOpMode {
             if(a.get(gamepad1.a)){
                 hangerUp = !hangerUp;
             }
-            
+
 //            Set target encoder positions
             tHanger = hangerUp? 2800 : 50;
 
 //            Set power for motors
             hSpeed = Math.abs(hw.getHanger().getCurrentPosition() - hLastPos);
             hLastPos = hw.getHanger().getCurrentPosition();
-            hanger = ((tHanger - hw.getHanger().getCurrentPosition()) + (Math.abs(hw.getHanger().getCurrentPosition() - hLastPos) - hSpeed)) * -0.000001;
+            hanger = ((tHanger - hw.getHanger().getCurrentPosition()) + (Math.abs((Math.abs(hw.getHanger().getCurrentPosition() - hLastPos)) - hSpeed)) * Math.abs(tHanger - hw.getHanger().getCurrentPosition())/tHanger - hw.getHanger().getCurrentPosition()) * -0.000001;
             hanger = Math.round(hanger * 10000) * 0.0001;
 //            hanger = 0.05;
 

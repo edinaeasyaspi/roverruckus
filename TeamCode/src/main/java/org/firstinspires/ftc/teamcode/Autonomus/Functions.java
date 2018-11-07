@@ -48,11 +48,11 @@ public class Functions {
 //        Drive until reached target, gradually slow down before target
         while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.1;
+            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.1;
+            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
 
@@ -75,11 +75,11 @@ public class Functions {
         //        Drive until reached target, gradually slow down before target
         while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.1;
+            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.1;
+            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
 
@@ -102,11 +102,11 @@ public class Functions {
 //      Drive until reached target, gradually slow down before target
         while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.1;
+            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.1;
+            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
 
@@ -129,11 +129,11 @@ public class Functions {
 //      Drive until reached target, gradually slow down before target
         while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.1;
+            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.1;
+            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
 //            Limit speed
             rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
 
@@ -168,7 +168,6 @@ public class Functions {
             case "reverse":
                 reverse(Double.parseDouble(currentLine.split(" ")[1]));
                 break;
-
             case "right":
                 right(Double.parseDouble(currentLine.split(" ")[1]));
                 break;

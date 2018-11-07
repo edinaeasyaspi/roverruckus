@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -35,6 +36,7 @@ public class Hardware {
 
     private DcMotor lDrive, cDrive, rDrive;
     private DcMotor hanger;
+    private Servo sweeper;
 
 
 
@@ -42,6 +44,10 @@ public class Hardware {
 
     public DcMotor getHanger() {
         return hanger;
+    }
+
+    public Servo getSweeper() {
+        return sweeper;
     }
 
     //    What will happen when there is a new object if this class
@@ -56,6 +62,7 @@ public class Hardware {
             cDrive = hwMap.dcMotor.get("cDrive");
             rDrive = hwMap.dcMotor.get("rDrive");
             hanger = hwMap.dcMotor.get("hanger");
+            sweeper = hwMap.servo.get("sweeper");
 
 //            Set all the motor powers to 0 and assign preferences
             lDrive.setPower(0);
@@ -81,6 +88,8 @@ public class Hardware {
             hanger.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             hanger.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             hanger.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            sweeper.setPosition(0.5);
 
             
         } catch (Exception e){
