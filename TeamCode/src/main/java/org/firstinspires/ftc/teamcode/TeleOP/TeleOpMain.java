@@ -26,6 +26,7 @@ public class TeleOpMain extends LinearOpMode {
         lDrive = 0;
         cDrive = 0;
         rDrive = 0;
+        hanger = 0;
 
 
         telemetry.addLine(hw.getError());
@@ -51,9 +52,7 @@ public class TeleOpMain extends LinearOpMode {
 
 
 //            Set power for motors
-            hSpeed = Math.abs(hw.getHanger().getCurrentPosition() - hLastPos);
-            hLastPos = hw.getHanger().getCurrentPosition();
-            hanger = ((tHanger - hw.getHanger().getCurrentPosition()) + (Math.abs((Math.abs(hw.getHanger().getCurrentPosition() - hLastPos)) - hSpeed)) * Math.abs(tHanger - hw.getHanger().getCurrentPosition())/tHanger - hw.getHanger().getCurrentPosition()) * -0.000001;
+            hanger = gamepad2.left_stick_y;
             hanger = Math.round(hanger * 10000) * 0.0001;
 //            hanger = 0.05;
 
