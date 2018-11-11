@@ -4,18 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Hardware;
-import org.firstinspires.ftc.teamcode.TeleOP.DriverAssistFunctions.Button;
+import org.firstinspires.ftc.teamcode.TeleOP.Tools.Button;
+import org.firstinspires.ftc.teamcode.TeleOP.Tools.MotorPositioner;
 
 
 @TeleOp(name = "TeleOpMain", group = "Robot")
 public class TeleOpMain extends LinearOpMode {
 
     private Hardware hw;
-    private double lDrive, cDrive, rDrive, hanger, hSpeed;
     private boolean hangerUp;
-    private int tHanger, hLastPos;
+    private double lDrive, cDrive, rDrive;
     private final double DRIVE_MAX_SPEED = 0.5;
-    private final double HANGER_MAX_SPEED = 1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -23,10 +22,19 @@ public class TeleOpMain extends LinearOpMode {
         hw = new Hardware(hardwareMap);
         Button a = new Button();
 
+        MotorPositioner latch = new MotorPositioner(
+        hw.getHanger(),
+        40,
+        3000,
+        1,
+        true
+        );
+
         lDrive = 0;
         cDrive = 0;
         rDrive = 0;
-        hanger = 0;
+
+        hangerUp = false;
 
 
         telemetry.addLine(hw.getError());
@@ -48,22 +56,15 @@ public class TeleOpMain extends LinearOpMode {
             cDrive = !(Math.abs(cDrive) > DRIVE_MAX_SPEED) ? cDrive : DRIVE_MAX_SPEED * (Math.abs(cDrive) / cDrive);
             rDrive = !(Math.abs(rDrive) > DRIVE_MAX_SPEED) ? rDrive : DRIVE_MAX_SPEED * (Math.abs(rDrive) / rDrive);
 
+//            Change hangerUp with button a
+            if(a.get(gamepad1.a)){
+                hangerUp = !hangerUp;
+            }
 
-
-
-//            Set power for motors
-            hanger = gamepad2.left_stick_y;
-            hanger = Math.round(hanger * 10000) * 0.0001;
-//            hanger = 0.05;
-
-//            Constrain motor power
-            hanger = !(Math.abs(hanger) > HANGER_MAX_SPEED) ? hanger : HANGER_MAX_SPEED * (Math.abs(hanger) / hanger);
-
+//            Change target position based on hangerUp
+            latch.setTargetPosition(hangerUp? 0.9 : 0.05);
 
 //            Output stats to the driver
-            telemetry.addData("Hanger Encoder Value", hw.getHanger().getCurrentPosition());
-            telemetry.addLine("Hanger power: " + hanger + ", Target Position: " + tHanger);
-            telemetry.addData("Hanger Up?", hangerUp);
             telemetry.addData("lDrive", lDrive);
             telemetry.addData("rDrive", rDrive);
             telemetry.update();
@@ -72,8 +73,7 @@ public class TeleOpMain extends LinearOpMode {
             hw.getlDrive().setPower(lDrive);
             hw.getcDrive().setPower(cDrive);
             hw.getrDrive().setPower(rDrive);
-            hw.getHanger().setPower(hanger);
-
+            latch.move();
 
         }
     }
