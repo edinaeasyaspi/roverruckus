@@ -48,6 +48,14 @@ public class Hardware {
         return sweeper;
     }
 
+    public DcMotor getStanchion() {
+        return stanchion;
+    }
+
+    public DcMotor getExtender() {
+        return extender;
+    }
+
     //    What will happen when there is a new object if this class
     public Hardware(HardwareMap hwMap){
         errorMsg = "";
@@ -90,13 +98,13 @@ public class Hardware {
             hanger.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
  
             extender.setPower(0);
-            extender.setDirection(DcMotorSimple.Direction.REVERSE);
+            extender.setDirection(DcMotorSimple.Direction.FORWARD);
             extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
  
             stanchion.setPower(0);
-            stanchion.setDirection(DcMotorSimple.Direction.REVERSE);
+            stanchion.setDirection(DcMotorSimple.Direction.FORWARD);
             stanchion.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             stanchion.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             stanchion.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
