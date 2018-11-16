@@ -14,7 +14,7 @@ public class TeleOpMain extends LinearOpMode {
         private Hardware hw;
         private boolean hangerUp;
         private double lDrive, cDrive, rDrive, sweeper;
-        private final double DRIVE_MAX_SPEED = 0.5;
+        private final static double DRIVE_MAX_SPEED = 1;
         private double stanchionPos, extenderPos;
         private boolean extensionAccess;
         private int stage;
@@ -45,7 +45,7 @@ public class TeleOpMain extends LinearOpMode {
             MotorPositioner extender = new MotorPositioner(
                     hw.getExtender(),
                     40,
-                    7000,
+                    12500,
                     1,
                     false
             );
@@ -57,7 +57,7 @@ public class TeleOpMain extends LinearOpMode {
 
             stanchionPos = 0;
             extenderPos = 0;
-            stage = 1;
+            stage = 0;
             sweeper = 0.5;
 
             hangerUp = false;
@@ -75,7 +75,7 @@ public class TeleOpMain extends LinearOpMode {
 
                 lDrive = ((-1 * gamepad1.left_stick_y) + (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
                 rDrive = ((-1 * gamepad1.left_stick_y) - (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
-                cDrive = (gamepad1.right_trigger - gamepad1.left_trigger) * DRIVE_MAX_SPEED;
+                cDrive = (gamepad1.left_stick_x) * DRIVE_MAX_SPEED;
 
 //            Constrain the drive speeds
                 lDrive = !(Math.abs(lDrive) > DRIVE_MAX_SPEED) ? lDrive : DRIVE_MAX_SPEED * (Math.abs(lDrive) / lDrive);
@@ -89,6 +89,10 @@ public class TeleOpMain extends LinearOpMode {
 
 //            Change target position based on hangerUp
                 latch.setTargetPosition(hangerUp ? 0.9 : 0);
+
+                if(hangerUp){
+                    stage = 0;
+                }
 
 //            Setting the continuous servo power
                 sweeper = 0.5 + (gamepad1.right_bumper ? 0.5 : 0) + (gamepad1.left_bumper ? 0.5 : 0);
@@ -113,8 +117,14 @@ public class TeleOpMain extends LinearOpMode {
                 }
 
 //                Set motor positions based on presets
-                if (change.get(gamepad1.x || gamepad1.y || gamepad1.b)) {
+                if (change.get(gamepad1.x || gamepad1.y || gamepad1.b || hangerUp)) {
                     switch (stage) {
+                        case 0:
+                            stanchionPos = 0;
+                            extenderPos = 0;
+                            extensionAccess = false;
+                            break;
+
                         case 1:
                             stanchionPos = 0;
                             extenderPos = 0.75;
@@ -132,6 +142,7 @@ public class TeleOpMain extends LinearOpMode {
                             extenderPos = 1;
                             extensionAccess = false;
                             break;
+
                     }
                 }
 

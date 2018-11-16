@@ -65,6 +65,10 @@ public class MotorPositioner {
         return maxSpeed;
     }
 
+    public void setMaxCount(int count){
+        max = count;
+    }
+
     public void move(){
         
         currPosition = (double) motor.getCurrentPosition() / max;
@@ -75,7 +79,7 @@ public class MotorPositioner {
         finalPower = (tVel + addPower) * charge;
 
         finalPower = !(Math.abs(finalPower) > maxSpeed) ? finalPower : maxSpeed * (Math.abs(finalPower) / finalPower);
-        
+
         motor.setPower(finalPower);
         
     }

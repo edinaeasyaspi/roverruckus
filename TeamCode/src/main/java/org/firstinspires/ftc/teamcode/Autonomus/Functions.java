@@ -5,13 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Functions {
-    
+
     Hardware hw;
 
-    private static final double COUNTS_PER_INCH = 100;
-    private static final double COUNTS_PER_DEGREE = 100;
-    private static final double COUNTS_PER_STRAFE_INCH = 100;
-    private static final double MAX_SPEED = 1;
+    private static final double COUNTS_PER_INCH = 66;
+    private static final double COUNTS_PER_DEGREE = 9.7;
+    private static final double COUNTS_PER_STRAFE_INCH = 3.6;
+    private static final double MAX_SPEED = 0.5;
+    private static final double TOLERANCE = 50;
 
     private int leftEncoderTarget;
     private int rightEncoderTarget;
@@ -37,8 +38,9 @@ public class Functions {
 
     public Functions(Hardware hw){
         this.hw = hw;
+        resetEncoders();
     }
-    
+
     public void forward(double inches){
         resetEncoders();
         leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH);
@@ -46,20 +48,14 @@ public class Functions {
 
 
 //        Drive until reached target, gradually slow down before target
-        while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
+        hw.getlDrive().setTargetPosition(leftEncoderTarget);
+        hw.getrDrive().setTargetPosition(rightEncoderTarget);
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
+        hw.getlDrive().setPower(MAX_SPEED);
+        hw.getlDrive().setPower(MAX_SPEED);
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
-
-            hw.getlDrive().setPower(lDrive);
-            hw.getrDrive().setPower(rDrive);
-
-        }
+//        Wait until the motors are done
+        while(hw.getlDrive().isBusy() || hw.getlDrive().isBusy()){}
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
@@ -71,93 +67,95 @@ public class Functions {
         leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH) * -1;
         rightEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH) * -1;
 
+//        Drive until reached target, gradually slow down before target
+        hw.getlDrive().setTargetPosition(leftEncoderTarget);
+        hw.getrDrive().setTargetPosition(rightEncoderTarget);
 
-        //        Drive until reached target, gradually slow down before target
-        while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
+        hw.getlDrive().setPower(MAX_SPEED);
+        hw.getlDrive().setPower(MAX_SPEED);
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
-
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
-
-            hw.getlDrive().setPower(lDrive);
-            hw.getrDrive().setPower(rDrive);
-
-        }
+//        Wait until the motors are done
+        while(hw.getlDrive().isBusy() || hw.getlDrive().isBusy()){}
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
-    
+
     public void right(double degrees){
 
         leftEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE);
         rightEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE) * -1;
 
 
-//      Drive until reached target, gradually slow down before target
-        while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
+//        Drive until reached target, gradually slow down before target
+        hw.getlDrive().setTargetPosition(leftEncoderTarget);
+        hw.getrDrive().setTargetPosition(rightEncoderTarget);
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
+        hw.getlDrive().setPower(MAX_SPEED);
+        hw.getlDrive().setPower(MAX_SPEED);
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
-
-            hw.getlDrive().setPower(lDrive);
-            hw.getrDrive().setPower(rDrive);
-
-        }
+//        Wait until the motors are done
+        while(hw.getlDrive().isBusy() || hw.getlDrive().isBusy()){}
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
-    
+
     public void left(double degrees){
         resetEncoders();
 
         leftEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE) * -1;
         rightEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE);
 
-//      Drive until reached target, gradually slow down before target
-        while((Math.abs(leftEncoderTarget - hw.getlDrive().getCurrentPosition()) > 10) || (Math.abs(rightEncoderTarget - hw.getrDrive().getCurrentPosition()) > 10)){
+//        Drive until reached target, gradually slow down before target
+        hw.getlDrive().setTargetPosition(leftEncoderTarget);
+        hw.getrDrive().setTargetPosition(rightEncoderTarget);
 
-            lDrive = (leftEncoderTarget - hw.getlDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            lDrive = !(Math.abs(lDrive) > MAX_SPEED) ? lDrive : MAX_SPEED * Math.abs(lDrive) / lDrive;
+        hw.getlDrive().setPower(MAX_SPEED);
+        hw.getlDrive().setPower(MAX_SPEED);
 
-            rDrive = (rightEncoderTarget - hw.getrDrive().getCurrentPosition()) * 0.00001;
-//            Limit speed
-            rDrive = !(Math.abs(rDrive) > MAX_SPEED) ? rDrive : MAX_SPEED * Math.abs(rDrive) / rDrive;
-
-            hw.getlDrive().setPower(lDrive);
-            hw.getrDrive().setPower(rDrive);
-
-        }
+//        Wait until the motors are done
+        while(hw.getlDrive().isBusy() || hw.getlDrive().isBusy()){}
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
-    
+
     public void strafeRight(double inches){
         resetEncoders();
+        centerEncoderTarget = (int)Math.round(inches * -COUNTS_PER_STRAFE_INCH);
 
+//        Move motors
+       hw.getcDrive().setTargetPosition(centerEncoderTarget);
+       hw.getcDrive().setPower(MAX_SPEED);
+
+//       Wait until motors are done
+       while( hw.getcDrive().isBusy()){}
+
+        hw.getcDrive().setPower(0);
 
     }
 
     public void strafeLeft(double inches){
         resetEncoders();
+        centerEncoderTarget = (int)Math.round(inches * -COUNTS_PER_STRAFE_INCH);
+
+//        Move motors
+        hw.getcDrive().setTargetPosition(centerEncoderTarget);
+        hw.getcDrive().setPower(MAX_SPEED);
+
+//       Wait until motors are done
+        while( hw.getcDrive().isBusy()){}
+
+        hw.getcDrive().setPower(0);
 
     }
-    
+
+
+//    This is the code that will interpret the text in whatever file the code is running from, so basically like the compiler
     public void interpretLine(String currentLine){
         switch (currentLine.split(" ")[0]) {
 
@@ -190,8 +188,8 @@ public class Functions {
         hw.getlDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getcDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getrDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        hw.getlDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        hw.getcDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        hw.getrDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hw.getlDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hw.getcDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hw.getrDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
