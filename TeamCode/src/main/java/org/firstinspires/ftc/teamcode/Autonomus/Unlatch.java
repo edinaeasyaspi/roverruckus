@@ -5,11 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hardware;
-import org.firstinspires.ftc.teamcode.TeleOP.Tools.MotorPositioner;
 
-@Autonomous(group = "Robot", name = "Gold")
+@Autonomous(name = "UnLatch")
+public class Unlatch extends LinearOpMode {
 
-public class Gold extends LinearOpMode {
 
     private Hardware hw;
 
@@ -25,6 +24,7 @@ public class Gold extends LinearOpMode {
         hw.getlDrive().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         hw.getcDrive().setMode(DcMotor.RunMode.RUN_TO_POSITION);
         hw.getrDrive().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         telemetry.addLine("Waiting for start");
         telemetry.update();
@@ -43,49 +43,11 @@ public class Gold extends LinearOpMode {
 
         sleep(2000);
 
-        f.reverse(8.5);
+        f.reverse(5);
 
-        mc.setLatchPos(0.25);
+        mc.setLatchPos(0);
 
         sleep(2000);
-
-        f.forward(4);
-
-        mc.setLatchPos(0);
-
-        sleep(1000);
-
-        f.strafeLeft(17);
-
-        mc.setLatchPos(0.25);
-
-        sleep(1000);
-
-        f.reverse(34);
-
-        mc.setLatchPos(0);
-
-        sleep(1000);
-
-        f.strafeLeft(15);
-
-        f.strafeRight(5);
-
-        mc.setLatchPos(0.25);
-
-        sleep(1000);
-
-        f.right(180);
-
-        f.reverse(48);
-
-        hw.getSweeper().setPosition(0);
-
-        sleep(1000);
-
-        hw.getSweeper().setPosition(0.5);
-
-        f.forward(72);
 
         mc.threadStop();
 

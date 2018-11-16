@@ -126,7 +126,7 @@ public class Functions {
 
     public void strafeRight(double inches){
         resetEncoders();
-        centerEncoderTarget = (int)Math.round(inches * -COUNTS_PER_STRAFE_INCH);
+        centerEncoderTarget = (int)Math.round(inches * COUNTS_PER_STRAFE_INCH);
 
 //        Move motors
        hw.getcDrive().setTargetPosition(centerEncoderTarget);
@@ -188,8 +188,8 @@ public class Functions {
         hw.getlDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getcDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getrDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        hw.getlDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        hw.getcDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        hw.getrDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hw.getlDrive().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hw.getcDrive().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hw.getrDrive().setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }

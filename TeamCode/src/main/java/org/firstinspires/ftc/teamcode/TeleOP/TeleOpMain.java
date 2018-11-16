@@ -95,7 +95,7 @@ public class TeleOpMain extends LinearOpMode {
                 }
 
 //            Setting the continuous servo power
-                sweeper = 0.5 + (gamepad1.right_bumper ? 0.5 : 0) + (gamepad1.left_bumper ? 0.5 : 0);
+                sweeper = 0.5 + (gamepad1.right_bumper ? 0.5 : 0) + (gamepad1.left_bumper ? -0.5 : 0);
 
 //            Output stats to the driver
                 telemetry.addData("lDrive", lDrive);

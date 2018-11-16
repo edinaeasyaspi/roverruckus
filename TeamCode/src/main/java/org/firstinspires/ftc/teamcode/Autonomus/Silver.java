@@ -44,9 +44,41 @@ public class Silver extends LinearOpMode{
 
             f.reverse(5);
 
-            mc.setLatchPos(0);
+            mc.setLatchPos(0.25);
 
             sleep(2000);
+
+            f.forward(4);
+
+            mc.setLatchPos(0);
+
+            sleep(1000);
+
+            f.strafeLeft(17);
+
+            mc.setLatchPos(0.25);
+
+            sleep(1000);
+
+            f.reverse(34);
+
+            mc.setLatchPos(0.25);
+
+            sleep(1000);
+
+            f.strafeLeft(15);
+
+            f.strafeRight(3);
+
+            f.reverse(48);
+
+            hw.getSweeper().setPosition(0);
+
+            sleep(2000);
+
+            hw.getSweeper().setPosition(0.5);
+
+            f.forward(72);
 
             mc.threadStop();
 
