@@ -41,41 +41,39 @@ public class Gold extends LinearOpMode {
 
         mc.setLatchPos(1);
 
-        sleep(2000);
+        sleep(1500);
 
         f.reverse(8.5);
 
         mc.setLatchPos(0.25);
 
-        sleep(2000);
+        sleep(1500);
 
         f.forward(4);
 
         mc.setLatchPos(0);
 
-        sleep(1000);
+        sleep(500);
 
-        f.strafeLeft(17);
+        f.strafeLeft(8.5);
 
         mc.setLatchPos(0.25);
 
-        sleep(1000);
+        sleep(500);
 
-        f.reverse(34);
+        f.reverse(17);
+
+        f.right(135);
 
         mc.setLatchPos(0);
 
-        sleep(1000);
-
-        f.strafeLeft(15);
+        sleep(500);
 
         f.strafeRight(5);
 
         mc.setLatchPos(0.25);
 
-        sleep(1000);
-
-        f.right(180);
+        sleep(500);
 
         f.reverse(48);
 
