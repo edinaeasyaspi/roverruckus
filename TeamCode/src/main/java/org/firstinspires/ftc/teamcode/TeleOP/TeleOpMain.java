@@ -13,10 +13,9 @@ public class TeleOpMain extends LinearOpMode {
 
         private Hardware hw;
         private boolean hangerUp;
-        private double lDrive, cDrive, rDrive, sweeper;
+        private double lDrive, cDrive, rDrive, sweeper, clutch;
         private final static double DRIVE_MAX_SPEED = 1;
         private double stanchionPos, extenderPos;
-        private boolean extensionAccess;
         private int stage;
 
 
@@ -29,7 +28,7 @@ public class TeleOpMain extends LinearOpMode {
             MotorPositioner stanchion = new MotorPositioner(
                     hw.getStanchion(),
                     20,
-                    6300,
+                    6800,
                     0.5,
                     false
             );
@@ -40,12 +39,12 @@ public class TeleOpMain extends LinearOpMode {
                     40, // This number should usually be somewhere in between 50 and 0
                     3000, // How far the motor actually goes in encoder counts
                     1, // The max speed that the motor is going to go
-                    true // Whether the motor is reversed or not
+                    false // Whether the motor is reversed or not
             );
             MotorPositioner extender = new MotorPositioner(
                     hw.getExtender(),
                     40,
-                    12500,
+                    12000,
                     1,
                     false
             );
@@ -61,7 +60,6 @@ public class TeleOpMain extends LinearOpMode {
             sweeper = 0.5;
 
             hangerUp = false;
-            extensionAccess = true;
 
             telemetry.addLine(hw.getError());
             telemetry.addLine("Waiting...");
@@ -75,12 +73,15 @@ public class TeleOpMain extends LinearOpMode {
 
                 lDrive = ((-1 * gamepad1.left_stick_y) + (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
                 rDrive = ((-1 * gamepad1.left_stick_y) - (gamepad1.right_stick_x * 0.5)) * DRIVE_MAX_SPEED;
-                cDrive = (gamepad1.left_stick_x) * DRIVE_MAX_SPEED;
+                cDrive = (gamepad1.left_stick_x) * DRIVE_MAX_SPEED * -2;
 
 //            Constrain the drive speeds
                 lDrive = !(Math.abs(lDrive) > DRIVE_MAX_SPEED) ? lDrive : DRIVE_MAX_SPEED * (Math.abs(lDrive) / lDrive);
-                cDrive = !(Math.abs(cDrive) > DRIVE_MAX_SPEED) ? cDrive : DRIVE_MAX_SPEED * (Math.abs(cDrive) / cDrive);
+                cDrive = !(Math.abs(cDrive) > DRIVE_MAX_SPEED * 2) ? cDrive : DRIVE_MAX_SPEED * 2 * (Math.abs(cDrive) / cDrive);
                 rDrive = !(Math.abs(rDrive) > DRIVE_MAX_SPEED) ? rDrive : DRIVE_MAX_SPEED * (Math.abs(rDrive) / rDrive);
+
+//                Give the clutch value
+                clutch = 0.125 + (Math.abs(lDrive) + Math.abs(rDrive)) * 0.0625 - Math.abs(cDrive) * 0.125;
 
 //            Change hangerUp with button a
                 if (a.get(gamepad1.a)) {
@@ -88,7 +89,7 @@ public class TeleOpMain extends LinearOpMode {
                 }
 
 //            Change target position based on hangerUp
-                latch.setTargetPosition(hangerUp ? 0.9 : 0);
+                latch.setTargetPosition(hangerUp ? 0.9 : clutch);
 
                 if(hangerUp){
                     stage = 0;
@@ -120,38 +121,34 @@ public class TeleOpMain extends LinearOpMode {
                 if (change.get(gamepad1.x || gamepad1.y || gamepad1.b || hangerUp)) {
                     switch (stage) {
                         case 0:
-                            stanchionPos = 0;
+                            stanchionPos = 0.25;
                             extenderPos = 0;
-                            extensionAccess = false;
                             break;
 
                         case 1:
                             stanchionPos = 0;
                             extenderPos = 0.75;
-                            extensionAccess = true;
                             break;
 
                         case 2:
                             stanchionPos = 0.5;
                             extenderPos = 0.5;
-                            extensionAccess = false;
                             break;
 
                         case 3:
                             stanchionPos = 1;
-                            extenderPos = 1;
-                            extensionAccess = false;
+                            extenderPos = 0.65;
                             break;
 
                     }
                 }
 
-//                If the driver has access to moving the extender, move it
-                if (extensionAccess) {
+//                Give the driver abilty to fine tune arm
                     extenderPos += (gamepad1.dpad_up ? 0.005 : 0) + (gamepad1.dpad_down ? -0.005 : 0);
+                    stanchionPos += (gamepad1.dpad_left? 1 : 0 - (gamepad1.dpad_right? 1 : 0)) * 0.005;
 //                    Constrain the value so there isn't any pressure
                     extenderPos = (extenderPos < 0 ? 0 : extenderPos > 1 ? 1 : extenderPos);
-                }
+                    stanchionPos = (stanchionPos < 0 ? 0 : stanchionPos > 1 ? 1 : stanchionPos);
 
                 extender.setTargetPosition(extenderPos);
                 stanchion.setTargetPosition(stanchionPos);
