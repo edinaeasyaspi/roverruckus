@@ -1,4 +1,0 @@
-forward 15
-backward 15
-right 90
-strafeLeft 10
