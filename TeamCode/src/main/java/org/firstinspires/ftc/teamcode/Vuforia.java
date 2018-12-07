@@ -76,7 +76,7 @@ public class Vuforia {
                 }
             }
 
-
+//       This is only if TFOD couldn't spot a gold mineral
         return Double.NaN;
     }
 

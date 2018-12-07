@@ -29,7 +29,7 @@ public class GoldPosition extends LinearOpMode {
         while (opModeIsActive()) {
             double goldX = vf.getGoldX();
 
-            telemetry.addLine((goldX == Double.NaN) ? "No gold detected" : ("Gold position: " + goldX));
+            telemetry.addLine((goldX == Double.NaN) ? "No gold detected" : ("Base position: " + goldX));
             telemetry.addLine("This is a test");
 
             if (vf.getObjects() != null) {

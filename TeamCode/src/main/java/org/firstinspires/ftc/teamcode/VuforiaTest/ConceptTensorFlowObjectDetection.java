@@ -55,7 +55,7 @@ import java.util.List;
 @Disabled
 public class ConceptTensorFlowObjectDetection extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
-    private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
+    private static final String LABEL_GOLD_MINERAL = "Base Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
     /*
@@ -130,11 +130,11 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
                         }
                         if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                           if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                            telemetry.addData("Gold Mineral Position", "Left");
+                            telemetry.addData("Base Mineral Position", "Left");
                           } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-                            telemetry.addData("Gold Mineral Position", "Right");
+                            telemetry.addData("Base Mineral Position", "Right");
                           } else {
-                            telemetry.addData("Gold Mineral Position", "Center");
+                            telemetry.addData("Base Mineral Position", "Center");
                           }
                         }
                       }

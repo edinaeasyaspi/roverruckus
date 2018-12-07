@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Autonomus.Functions;
 import org.firstinspires.ftc.teamcode.Autonomus.MotorController;
 import org.firstinspires.ftc.teamcode.Hardware;
 
-@Autonomous(group = "Robot", name = "Gold")
+@Autonomous(group = "Robot", name = "Base")
 @Disabled
 public class Gold extends LinearOpMode {
 

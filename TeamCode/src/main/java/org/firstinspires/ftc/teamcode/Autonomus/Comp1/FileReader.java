@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.Autonomus;
+package org.firstinspires.ftc.teamcode.Autonomus.Comp1;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;

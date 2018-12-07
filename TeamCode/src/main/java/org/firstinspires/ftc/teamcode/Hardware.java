@@ -1,20 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.motors.TetrixMotor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.vuforia.Vuforia;
-
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
 public class Hardware {
@@ -63,7 +53,6 @@ public class Hardware {
 //        Assign all the object to the actual components on the robot
         try {
 
-//            sampler = hwMap.colorSensor.get("sampler");
             lDrive = hwMap.dcMotor.get("lDrive");
             cDrive = hwMap.dcMotor.get("cDrive");
             rDrive = hwMap.dcMotor.get("rDrive");

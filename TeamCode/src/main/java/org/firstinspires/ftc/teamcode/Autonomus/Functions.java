@@ -155,6 +155,7 @@ public class Functions {
 
     }
 
+//    These methods are for more precise, individual motor controls
     public void setLDrive(double inches, double power){
         leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH);
         lPower = power;
@@ -169,6 +170,7 @@ public class Functions {
         rPower = power;
     }
 
+//    The move method for the individual motor calls
     public void move(){
 
         resetEncoders();
@@ -189,34 +191,35 @@ public class Functions {
 
 
 //    This is the code that will interpret the text in whatever file the code is running from, so basically like the compiler
-    public void interpretLine(String currentLine){
-        switch (currentLine.split(" ")[0]) {
+//    public void interpretLine(String currentLine){
+//        switch (currentLine.split(" ")[0]) {
+//
+//            case "forward":
+//                forward(Double.parseDouble(currentLine.split(" ")[1]));
+//                break;
+//
+//            case "reverse":
+//                reverse(Double.parseDouble(currentLine.split(" ")[1]));
+//                break;
+//            case "right":
+//                right(Double.parseDouble(currentLine.split(" ")[1]));
+//                break;
+//
+//            case "left":
+//                left(Double.parseDouble(currentLine.split(" ")[1]));
+//                break;
+//
+//            case "strafeRight":
+//                strafeRight(Double.parseDouble(currentLine.split(" ")[1]));
+//                break;
+//
+//            case "strafeLeft":
+//                strafeLeft(Double.parseDouble(currentLine.split(" ")[1]));
+//                break;
+//        }
+//    }
 
-            case "forward":
-                forward(Double.parseDouble(currentLine.split(" ")[1]));
-                break;
-
-            case "reverse":
-                reverse(Double.parseDouble(currentLine.split(" ")[1]));
-                break;
-            case "right":
-                right(Double.parseDouble(currentLine.split(" ")[1]));
-                break;
-
-            case "left":
-                left(Double.parseDouble(currentLine.split(" ")[1]));
-                break;
-
-            case "strafeRight":
-                strafeRight(Double.parseDouble(currentLine.split(" ")[1]));
-                break;
-
-            case "strafeLeft":
-                strafeLeft(Double.parseDouble(currentLine.split(" ")[1]));
-                break;
-        }
-    }
-
+//    Set all the encoders to 0
     private void resetEncoders(){
         hw.getlDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getcDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

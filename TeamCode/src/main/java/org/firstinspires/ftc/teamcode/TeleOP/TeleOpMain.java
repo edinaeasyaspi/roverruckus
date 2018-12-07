@@ -52,6 +52,8 @@ public class TeleOpMain extends LinearOpMode {
             lDrive = 0;
             cDrive = 0;
             rDrive = 0;
+
+//            Adding a Button so the state only updates when a button is pressed
             Button change = new Button();
 
             stanchionPos = 0;
@@ -61,11 +63,11 @@ public class TeleOpMain extends LinearOpMode {
 
             hangerUp = false;
 
-            telemetry.addLine(hw.getError());
-            telemetry.addLine("Waiting...");
-            telemetry.update();
-
-            waitForStart();
+//            Make sure the phones don't disconnect
+            while(!opModeIsActive() && !isStopRequested()){
+                telemetry.addLine("Sending manual heartbeat");
+                telemetry.update();
+            }
 
             telemetry.clearAll();
 
@@ -143,10 +145,10 @@ public class TeleOpMain extends LinearOpMode {
                     }
                 }
 
-//                Give the driver abilty to fine tune arm
+//                Give the driver ability to fine tune arm
                     extenderPos += (gamepad1.dpad_up ? 0.005 : 0) + (gamepad1.dpad_down ? -0.005 : 0);
                     stanchionPos += (gamepad1.dpad_left? 1 : 0 - (gamepad1.dpad_right? 1 : 0)) * 0.005;
-//                    Constrain the value so there isn't any pressure
+//                    Constrain the value so the motors don't go where they're not supposed to
                     extenderPos = (extenderPos < 0 ? 0 : extenderPos > 1 ? 1 : extenderPos);
                     stanchionPos = (stanchionPos < 0 ? 0 : stanchionPos > 1 ? 1 : stanchionPos);
 

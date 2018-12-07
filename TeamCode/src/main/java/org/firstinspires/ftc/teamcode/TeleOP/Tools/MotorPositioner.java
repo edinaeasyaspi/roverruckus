@@ -16,13 +16,15 @@ public class MotorPositioner {
         accel = acceleration;
         max = maxEncoderValue;
         this.maxSpeed = maxSpeed;
-        
+
+//        Init all the variables
         finalPower = 0;
         currVel = 0;
         tVel = 0;
         lastPos = 0;
         addPower = 0;
-        
+
+//        This is if the wire of the motor is plugged in backwards
         charge = reversed? -1 : 1;
         
     }
@@ -70,16 +72,26 @@ public class MotorPositioner {
     }
 
     public void move(){
-        
+
+//        Converts the position to a double (decimal) between 0 and 1
         currPosition = (double) motor.getCurrentPosition() / max;
+//        What the speed the motor wants to move at
+//        This means as the motor gets further from its target position,
+//        it speeds up in order to get to the position it needs to be.
         tVel = (tPosition - currPosition);
+//        Measures what speed the motor is moving at
         currVel = currPosition - lastPos;
+//        Updates the lastPos variable for the speed reading in the next iteration
         lastPos = currPosition;
+//        Makes sure that the motor is moving at the right speed
+//        This is basically what we did above, but for velocity
+//        We need this because we need to fight against forces like gravity
         addPower = (tVel - currVel) * accel;
+//        Just the variable that combines the 2 velocity variables into one
         finalPower = (tVel + addPower) * charge;
-
+//        Constrain the final power so the value is within -1 to 1
         finalPower = !(Math.abs(finalPower) > maxSpeed) ? finalPower : maxSpeed * (Math.abs(finalPower) / finalPower);
-
+//        Set the motor to the final power
         motor.setPower(finalPower);
         
     }
