@@ -36,7 +36,7 @@ public class MotorController extends Thread {
         );
         extender = new MotorPositioner(
                 hw.getExtender(),
-                40,
+                30,
                 12500,
                 1,
                 false

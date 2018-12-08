@@ -4,17 +4,24 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.Vuforia;
 
 
-@Autonomous(name="Main")
+@Autonomous(name = "Main")
 public class Base extends LinearOpMode {
 
     private Hardware hw;
     private Vuforia vf;
+    private String side;
     private MotorController mc;
+    private Functions f;
     private double latchPos;
+
+    public Functions getF() {
+        return f;
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -37,28 +44,51 @@ public class Base extends LinearOpMode {
         mc.setLatchPos(0);
 
 //        Create a new instance of the Functions class so we can control the robot easily
-        Functions f = new Functions(hw);
+        f = new Functions(hw);
+
+        side = "none";
 
 //        Make sure the phones don't disconnect while waiting for start
-        while(!opModeIsActive() && !isStopRequested()){
+        while (!opModeIsActive() && !isStopRequested() || side.equals("none")) {
             telemetry.addLine("Sending manual heartbeat");
+
+            if(side.equals("none")){
+                telemetry.addLine("Select a side. 'a' = gold and 'b' = silver");
+
+                if(gamepad1.a){
+                    side = "gold";
+                }
+
+                if(gamepad1.b){
+                    side = "silver";
+                }
+
+            } else{
+                telemetry.addLine("All good, waiting for start");
+            }
+
             telemetry.update();
         }
 
 //        Unlatch
+        print("Unlatching");
         setLatchPos(1);
 
-//        Set to driving mode
+//        Move away from hook
+        f.forward(4);
+
+//        Lower hook
         setLatchPos(0.25);
 
 //        Line up with the lander
-        f.reverse(2);
+        f.reverse(4);
 
 //        Set to strafing mode
         setLatchPos(0);
 
 //        Move away from the lander
-        f.strafeLeft(8);
+        print("Positioning");
+        f.strafeLeft(10);
 
 //        Driving mode
         setLatchPos(0.25);
@@ -70,66 +100,121 @@ public class Base extends LinearOpMode {
         setLatchPos(0);
 
 //        Move to the left side of the minerals
-        f.strafeLeft(5);
+        f.strafeLeft(10);
+
 
 //        Set the strafe wheel so it can line up with the gold mineral
+        print("Resetting encoders");
         hw.getcDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        hw.getcDrive().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hw.getcDrive().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 //        Activate tensorflow
+        print("Starting vuforia");
         vf.activate();
 
 //        Set variables for sampling
-        double position = 0;
+        int position = 0;
+        boolean isFound = false;
         double goldX;
         double power;
+        int foundFrames = 0;
 
 //        This will run until the code is stopped, or the robot has moved to the other end of the minerals
-        while(!opModeIsActive() && !isStopRequested() && position > (-33 * 126.6)){
+        print("Scanning");
+
+        while (opModeIsActive() && !isStopRequested() && position > (-40 * 126.6)) {
 //            This is to keep track of how far the robot has moved
             position = hw.getcDrive().getCurrentPosition();
 //            Set goldX to the gold mineral x position on the camera, -500 which makes the origin in the center of the screen
             goldX = vf.getGoldX() - 500;
+            isFound = (isFound) || vf.isGoldFound();
+
+            telemetry.addData("Gold x", goldX);
 
 //            Testing if the robot can see the gold
-            if(goldX == Double.NaN){
+            if (!isFound) {
 //                Keep driving by all the minerals
-                power = -0.5;
-            } else{
+                telemetry.addLine("Cannot see");
+                power = -0.25;
+                foundFrames = 0;
+            } else {
+                telemetry.addLine("Aligning");
 //                Set power to align with the gold based on how offset the robot is
                 power = goldX / -700.0d;
 
+                foundFrames += 1;
+
 //                If the robot is aligned with the gold mineral
-                if(Math.abs(goldX) < 50){
+                if (Math.abs(goldX) < 50 && foundFrames > 100) {
+                    print("Hitting");
 //                    Stop strafing
                     hw.getcDrive().setPower(0);
 //                    Driving mode
                     setLatchPos(0.25);
 //                    Bump mineral
-                    f.forward(5);
+                    f.forward(10, 0.5);
 //                    Wait for momentum to stop
                     sleep(100);
-//                    Go back to original position
-                    f.reverse(5);
+//                    Return
+                    if(side.equals("silver")) {
+                        f.reverse(7, 0.5);
+                    }
 //                    Exit out of the while loop, since we have successfully sampled
                     break;
                 }
             }
 
+            telemetry.update();
+
 //            Set the power of the motor from the hardware
             hw.getcDrive().setPower(power);
         }
 
+        vf.deactivate();
+
+        print("Done sampling");
+
+        sleep(100);
+
+//        Split between the 2 codes
+        switch(side){
+            case "gold":
+                new Gold(this).execute();
+                break;
+            case "silver":
+                new Sliver(this, position).execute();
+                break;
+        }
+
         mc.threadStop();
+
 
     }
 
-    public void setLatchPos(double pos){
+    public MotorController getMc() {
+        return mc;
+    }
+
+    public Hardware getHw() {
+
+        return hw;
+    }
+
+    public Telemetry getTem(){
+        return telemetry;
+    }
+
+    public void setLatchPos(double pos) {
 //        Set the latch position in the MotorController class
         mc.setLatchPos(pos);
 //        Wait until the latch has stopped
-        sleep(Math.round(Math.abs(pos - latchPos) * 1500));
+        sleep(Math.round(Math.abs(pos - latchPos) * 1700));
 //        Update the current position value
         latchPos = pos;
+    }
+
+    public void print(String s){
+        telemetry.addLine(s);
+        telemetry.update();
     }
 }

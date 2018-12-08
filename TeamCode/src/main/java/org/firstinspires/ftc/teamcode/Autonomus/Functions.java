@@ -36,15 +36,15 @@ public class Functions {
         return COUNTS_PER_STRAFE_INCH;
     }
 
-    public Functions(Hardware hw){
+    public Functions(Hardware hw) {
         this.hw = hw;
         resetEncoders();
     }
 
-    public void forward(double inches){
+    public void forward(double inches) {
         resetEncoders();
-        leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH);
-        rightEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH);
+        leftEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH);
+        rightEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH);
 
 
 //        Drive until reached target, gradually slow down before target
@@ -55,17 +55,40 @@ public class Functions {
         hw.getrDrive().setPower(MAX_SPEED);
 
 //        Wait until the motors are done
-        while(hw.getrDrive().isBusy() && hw.getlDrive().isBusy()){}
+        while (hw.getrDrive().isBusy() && hw.getlDrive().isBusy()) {
+        }
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
 
-    public void reverse(double inches){
+    public void forward(double inches, double speed) {
         resetEncoders();
-        leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH) * -1;
-        rightEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH) * -1;
+        leftEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH);
+        rightEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH);
+
+
+//        Drive until reached target, gradually slow down before target
+        hw.getlDrive().setTargetPosition(leftEncoderTarget);
+        hw.getrDrive().setTargetPosition(rightEncoderTarget);
+
+        hw.getlDrive().setPower(MAX_SPEED * speed);
+        hw.getrDrive().setPower(MAX_SPEED * speed);
+
+//        Wait until the motors are done
+        while (hw.getrDrive().isBusy() && hw.getlDrive().isBusy()) {
+        }
+
+        hw.getlDrive().setPower(0);
+        hw.getrDrive().setPower(0);
+
+    }
+
+    public void reverse(double inches) {
+        resetEncoders();
+        leftEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH) * -1;
+        rightEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH) * -1;
 
 //        Drive until reached target, gradually slow down before target
         hw.getlDrive().setTargetPosition(leftEncoderTarget);
@@ -75,103 +98,130 @@ public class Functions {
         hw.getrDrive().setPower(MAX_SPEED);
 
 //        Wait until the motors are done
-        while(hw.getrDrive().isBusy() && hw.getlDrive().isBusy()){}
+        while (hw.getrDrive().isBusy() && hw.getlDrive().isBusy()) {
+        }
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
 
-    public void right(double degrees){
+    public void reverse(double inches, double speed) {
+        resetEncoders();
+        leftEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH) * -1;
+        rightEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH) * -1;
+
+//        Drive until reached target, gradually slow down before target
+        hw.getlDrive().setTargetPosition(leftEncoderTarget);
+        hw.getrDrive().setTargetPosition(rightEncoderTarget);
+
+        hw.getlDrive().setPower(MAX_SPEED * speed);
+        hw.getrDrive().setPower(MAX_SPEED * speed);
+
+//        Wait until the motors are done
+        while (hw.getrDrive().isBusy() && hw.getlDrive().isBusy()) {
+        }
+
+        hw.getlDrive().setPower(0);
+        hw.getrDrive().setPower(0);
+
+    }
+
+    public void right(double degrees) {
         resetEncoders();
 
-        leftEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE);
-        rightEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE) * -1;
+        leftEncoderTarget = (int) Math.round(degrees * COUNTS_PER_DEGREE);
+        rightEncoderTarget = (int) Math.round(degrees * COUNTS_PER_DEGREE) * -1;
 
 
 //        Drive until reached target, gradually slow down before target
         hw.getlDrive().setTargetPosition(leftEncoderTarget);
         hw.getrDrive().setTargetPosition(rightEncoderTarget);
 
-        hw.getlDrive().setPower(MAX_SPEED);
-        hw.getrDrive().setPower(MAX_SPEED);
+        hw.getlDrive().setPower(MAX_SPEED * 0.5);
+        hw.getrDrive().setPower(MAX_SPEED * 0.5);
 
 //        Wait until the motors are done
-        while(hw.getrDrive().isBusy() && hw.getlDrive().isBusy()){}
+        while (hw.getrDrive().isBusy() && hw.getlDrive().isBusy()) {
+        }
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
 
-    public void left(double degrees){
+    public void left(double degrees) {
         resetEncoders();
 
-        leftEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE) * -1;
-        rightEncoderTarget = (int)Math.round(degrees * COUNTS_PER_DEGREE);
+        leftEncoderTarget = (int) Math.round(degrees * COUNTS_PER_DEGREE) * -1;
+        rightEncoderTarget = (int) Math.round(degrees * COUNTS_PER_DEGREE);
 
 //        Drive until reached target, gradually slow down before target
         hw.getlDrive().setTargetPosition(leftEncoderTarget);
         hw.getrDrive().setTargetPosition(rightEncoderTarget);
 
-        hw.getlDrive().setPower(MAX_SPEED);
-        hw.getrDrive().setPower(MAX_SPEED);
+        hw.getlDrive().setPower(MAX_SPEED * 0.5);
+        hw.getrDrive().setPower(MAX_SPEED * 0.5);
 
 //        Wait until the motors are done
-        while(hw.getrDrive().isBusy() && hw.getlDrive().isBusy()){}
+        while (hw.getrDrive().isBusy() && hw.getlDrive().isBusy()) {
+        }
 
         hw.getlDrive().setPower(0);
         hw.getrDrive().setPower(0);
 
     }
 
-    public void strafeRight(double inches){
+    public void strafeRight(double inches) {
         resetEncoders();
-        centerEncoderTarget = (int)Math.round(inches * -COUNTS_PER_STRAFE_INCH);
-
-//        Move motors
-       hw.getcDrive().setTargetPosition(centerEncoderTarget);
-       hw.getcDrive().setPower(MAX_SPEED * 2);
-
-//       Wait until motors are done
-       while( hw.getcDrive().isBusy()){}
-
-        hw.getcDrive().setPower(0);
-
-    }
-
-    public void strafeLeft(double inches){
-        resetEncoders();
-        centerEncoderTarget = (int)Math.round(inches * COUNTS_PER_STRAFE_INCH);
+        centerEncoderTarget = (int) Math.round(inches * -COUNTS_PER_STRAFE_INCH);
 
 //        Move motors
         hw.getcDrive().setTargetPosition(centerEncoderTarget);
         hw.getcDrive().setPower(MAX_SPEED * 2);
 
 //       Wait until motors are done
-        while( hw.getcDrive().isBusy()){}
+        while (hw.getcDrive().isBusy()) {
+        }
 
         hw.getcDrive().setPower(0);
 
     }
 
-//    These methods are for more precise, individual motor controls
-    public void setLDrive(double inches, double power){
-        leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH);
+    public void strafeLeft(double inches) {
+        resetEncoders();
+        centerEncoderTarget = (int) Math.round(inches * COUNTS_PER_STRAFE_INCH);
+
+//        Move motors
+        hw.getcDrive().setTargetPosition(centerEncoderTarget);
+        hw.getcDrive().setPower(MAX_SPEED * 2);
+
+//       Wait until motors are done
+        while (hw.getcDrive().isBusy()) {
+        }
+
+        hw.getcDrive().setPower(0);
+
+    }
+
+    //    These methods are for more precise, individual motor controls
+    public void setLDrive(double inches, double power) {
+        leftEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH);
         lPower = power;
     }
 
-    public void setCDrive(double inches, double power){
-        centerEncoderTarget = (int)Math.round(inches * COUNTS_PER_STRAFE_INCH);
+    public void setCDrive(double inches, double power) {
+        centerEncoderTarget = (int) Math.round(inches * COUNTS_PER_STRAFE_INCH);
         cPower = power;
     }
-    public void setRDrive(double inches, double power){
-        leftEncoderTarget = (int)Math.round(inches * COUNTS_PER_INCH);
+
+    public void setRDrive(double inches, double power) {
+        leftEncoderTarget = (int) Math.round(inches * COUNTS_PER_INCH);
         rPower = power;
     }
 
-//    The move method for the individual motor calls
-    public void move(){
+    //    The move method for the individual motor calls
+    public void move() {
 
         resetEncoders();
 
@@ -182,7 +232,8 @@ public class Functions {
         hw.getlDrive().setTargetPosition(leftEncoderTarget);
         hw.getlDrive().setPower(rPower);
 
-        while(hw.getlDrive().isBusy() && hw.getrDrive().isBusy() && hw.getcDrive().isBusy()){}
+        while (hw.getlDrive().isBusy() && hw.getrDrive().isBusy() && hw.getcDrive().isBusy()) {
+        }
 
         hw.getlDrive().setPower(0);
         hw.getcDrive().setPower(0);
@@ -219,8 +270,8 @@ public class Functions {
 //        }
 //    }
 
-//    Set all the encoders to 0
-    private void resetEncoders(){
+    //    Set all the encoders to 0
+    private void resetEncoders() {
         hw.getlDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getcDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         hw.getrDrive().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Vuforia {
 
-//    Customizable fields for recognition
+    //    Customizable fields for recognition
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -24,7 +24,7 @@ public class Vuforia {
     private double goldX;
     private boolean goldFound;
 
-    public Vuforia(HardwareMap hwMap){
+    public Vuforia(HardwareMap hwMap) {
 
 //        Vuforia
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -45,42 +45,46 @@ public class Vuforia {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 
-    public void activate(){
+    public void activate() {
         tfod.activate();
         goldFound = false;
         goldX = getGoldX();
     }
 
-    public void deactivate(){
+    public void deactivate() {
         tfod.deactivate();
     }
 
-    public double getGoldX(){
+    public double getGoldX() {
 //        Assign what TFOD is seeing to an ArrayList
-        ArrayList<Recognition> getObjects = (ArrayList<Recognition>)(tfod.getRecognitions());
+        ArrayList<Recognition> getObjects = (ArrayList<Recognition>) (tfod.getRecognitions());
 
 //        Makes sure there are objects
-            if(getObjects != null && getObjects.size() > 0) {
+        if (getObjects != null && getObjects.size() > 0) {
 
 //                Iterate through each new object that TFOD has detected
-                for (Recognition object : getObjects) {
-                    if (object.getLabel().equals(LABEL_GOLD_MINERAL) && object.getTop() < 500) {
+            for (Recognition object : getObjects) {
+                if (object.getLabel().equals(LABEL_GOLD_MINERAL) && object.getTop() < 500) {
 //                        This is when the object detected is a gold mineral
 
-                        goldFound = true;
+                    goldFound = true;
 //                        Set our variable goldX to what our updated gold mineral is
-                        goldX = (double) object.getLeft();
+                    goldX = (double) object.getLeft();
 //                        Break out of the for loop since we have already found the gold mineral
-                        return goldX;
-                    }
+                    return goldX;
                 }
             }
+        }
 
 //       This is only if TFOD couldn't spot a gold mineral
         return Double.NaN;
     }
 
-    public ArrayList<Recognition> getObjects(){
-            return (ArrayList<Recognition>)(tfod.getRecognitions());
+    public ArrayList<Recognition> getObjects() {
+        return (ArrayList<Recognition>) (tfod.getRecognitions());
+    }
+
+    public boolean isGoldFound(){
+        return goldFound;
     }
 }
